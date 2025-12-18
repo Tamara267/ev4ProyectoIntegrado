@@ -1,0 +1,51 @@
+{% extends 'personajes/base.html' %}
+{% block title %}Crear Personaje{% endblock %}
+{% block content %}
+
+<h2 class="text-center mb-4">Crear Nuevo Personaje</h2>
+
+<form method="post" class="mx-auto" style="max-width: 600px;">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" name="nombre" class="form-control" placeholder="Ej: Arthan">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Raza</label>
+        <input type="text" name="raza" class="form-control" placeholder="Humano, Elfo, etc.">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Estado</label>
+        <select name="estado" class="form-select">
+            <option value="vivo">Vivo</option>
+            <option value="muerto">Muerto</option>
+            <option value="desconocido">Desconocido</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nivel</label>
+        <input type="number" name="nivel" class="form-control" min="1" value="1">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Habilidades</label>
+        <input type="text" name="habilidades" class="form-control" placeholder="Separadas por comas">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Poder</label>
+        <input type="text" name="poder" class="form-control" placeholder="Ej: Magia, Espada, etc.">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Equipo</label>
+        <input type="text" name="equipo" class="form-control" placeholder="Ej: Escudo, Armadura...">
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Guardar Personaje</button>
+</form>
+
+{% endblock %}

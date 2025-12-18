@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Editar Personaje</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 600;
+      margin: 0;
+      background: #4B0082; 
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card { 
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 40px 60px;
+      max-width: 1000px;
+      width: 95%;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 28px;
+      color: #222;
+      font-size: 2em;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 700;
+      color: #111;
+      font-size: 1.05em;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      margin-top: 8px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background-color: #8fd3ff; 
+      color: #000;
+      font-size: 1.05em;
+      font-weight: 600;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #1b6fd6;
+      background-color: #a8e2ff;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 32px;
+      gap: 16px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 0;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.05em;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-primary {
+      background: #2d89ef;
+    }
+
+    .btn-primary:hover {
+      background: #1b6fd6;
+      transform: scale(1.03);
+    }
+
+    .btn-secondary {
+      background: #555;
+    }
+
+    .btn-secondary:hover {
+      background: #333;
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Editar Personaje</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label>Nombre</label>
+      <input name="nombre" value="{{ personaje.nombre }}" required>
+
+      <label>Raza</label>
+      <input name="raza" value="{{ personaje.raza }}" required>
+
+      <label>Estado</label>
+      <select name="estado">
+        <option {% if personaje.estado == "vivo" %}selected{% endif %}>vivo</option>
+        <option {% if personaje.estado == "muerto" %}selected{% endif %}>muerto</option>
+        <option {% if personaje.estado == "congelado" %}selected{% endif %}>congelado</option>
+      </select>
+
+      <label>Nivel</label>
+      <input type="number" name="nivel" min="1" value="{{ personaje.nivel }}">
+
+      <label>Poder</label>
+      <input name="poder" value="{{ personaje.poder }}" required>
+
+      <label>Equipamiento</label>
+      <input name="equipo" value="{{ personaje.equipo }}" required>
+      
+      <div class="btn-container">
+        <button class="btn btn-primary" type="submit">Guardar cambios</button>
+        <a href="{% url 'panel_jugador' %}" class="btn btn-secondary">Volver</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

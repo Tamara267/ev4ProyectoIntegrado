@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Panel Jugador - Gestor de Personajes</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 600;
+      margin: 0;
+      background: #4B0082; 
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #main {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 60px;
+      max-width: 1100px;
+      width: 95%;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      text-align: center;
+      color: #111;
+      margin-bottom: 30px;
+      font-size: 2em;
+      font-weight: 700;
+    }
+
+    h4 {
+      color: #222;
+      margin-bottom: 16px;
+      font-size: 1.3em;
+      font-weight: 700;
+    }
+
+    .card {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background: #fafafa;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      margin-top: 6px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background-color: #8fd3ff; 
+      color: #000;
+      font-size: 1.05em;
+      font-weight: 600;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #1b6fd6;
+      background-color: #a8e2ff;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.05em;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin-top: 16px;
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+    }
+
+    .btn.edit { background: #4caf50; }
+    .btn.edit:hover { background: #3e8e41; }
+
+    .btn.warn { background: #ef6f4d; }
+    .btn.warn:hover { background: #d55533; }
+
+    .btn.primary { background: #2d89ef; }
+    .btn.primary:hover { background: #1b6fd6; }
+
+    .flex {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+
+    .note {
+      font-size: 0.95em;
+      color: #444;
+      margin-top: 8px;
+    }
+
+    .logout-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <h2>Panel Jugador - {{ user.username }}</h2>
+
+    <div class="card">
+      <h4>Crear Personaje</h4>
+      <form method="post" action="{% url 'create_character' %}">
+        {% csrf_token %}
+        <label>Nombre</label>
+        <input name="nombre" required>
+
+        <label>Raza</label>
+        <input name="raza" required>
+
+        <label>Estado</label>
+        <select name="estado">
+          <option>vivo</option>
+          <option>muerto</option>
+          <option>congelado</option>
+        </select>
+
+        <label>Nivel</label>
+        <input name="nivel" type="number" min="1" value="1">
+
+        <label>Poder</label>
+        <input name="poder" required>
+
+        <label>Equipamiento</label>
+        <input name="equipo" required>
+
+        <button class="btn primary" type="submit">Crear Personaje</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h4>Mis Personajes</h4>
+      {% if personajes %}
+        {% for p in personajes %}
+          <div class="card">
+            <b>{{ p.nombre }}</b> (nivel {{ p.nivel }}) - {{ p.estado }}
+            <div class="note">
+              Raza: {{ p.raza }} | Poder: {{ p.poder }} | Equipo: {{ p.equipo }}
+            </div>
+            <div class="flex">
+              <a href="{% url 'editar_personaje' p.pk %}" class="btn edit">Editar</a>
+              <form action="{% url 'eliminar_personaje' p.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn warn">Eliminar</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="note">No tienes personajes.</div>
+      {% endif %}
+    </div>
+
+    <div class="logout-container">
+      <a href="{% url 'logout_view' %}" class="btn warn">Cerrar sesión</a>
+    </div>
+  </div>
+</body>
+</html>

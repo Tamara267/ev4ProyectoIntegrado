@@ -1,0 +1,33 @@
+{% extends 'personajes/base.html' %}
+{% block title %}Inicio - Gestor de Personajes{% endblock %}
+{% block content %}
+
+<h1 class="mb-4 text-center">Lista de Personajes</h1>
+
+{% if personajes %}
+    <div class="row">
+        {% for p in personajes %}
+            <div class="col-md-4">
+                <div class="card text-bg-dark mb-3 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ p.nombre }}</h5>
+                        <p class="card-text">
+                            <strong>Raza:</strong> {{ p.raza }}<br>
+                            <strong>Estado:</strong> {{ p.estado }}<br>
+                            <strong>Nivel:</strong> {{ p.nivel }}<br>
+                            <strong>Poder:</strong> {{ p.poder }}<br>
+                            <strong>Dueño:</strong> {{ p.owner.username }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info text-center">
+        No hay personajes registrados todavía.
+    </div>
+{% endif %}
+
+{% endblock %}
+

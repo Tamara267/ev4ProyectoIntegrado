@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Panel GM - Gestor de Personajes</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 600;
+      margin: 0;
+      background: #4B0082; 
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 0;
+    }
+
+    #main {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 60px;
+      max-width: 900px;
+      width: 95%;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      text-align: center;
+      color: #111;
+      margin-bottom: 30px;
+      font-size: 2em;
+      font-weight: 700;
+    }
+
+    h4 {
+      font-size: 1.3em;
+      color: #222;
+      margin-bottom: 15px;
+    }
+
+    .card {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background: #fff; 
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .card .card {
+      background: #fff; 
+      border: 2px solid #bbb;
+      margin-top: 15px;
+    }
+
+    .note {
+      font-size: 0.95em;
+      color: #222;
+      margin-top: 8px;
+      background-color: #fff; 
+      border-radius: 8px;
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    .btn {
+      margin-top: 15px;
+      padding: 10px 18px;
+      border: none;
+      background: #2d89ef;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-block;
+      font-size: 1.05em;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+      background: #1b6fd6;
+    }
+
+    .btn.warn {
+      background: #ef6f4d;
+    }
+
+    .btn.warn:hover {
+      background: #d15536;
+    }
+
+    .edit-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #2d89ef;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 700;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .edit-btn:hover {
+      background: #1b6fd6;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <h2>Panel GM - {{ user.username }}</h2>
+
+    <div class="card">
+      <h4>Todos los Personajes</h4>
+      {% if personajes %}
+        {% for p in personajes %}
+          <div class="card">
+            <form action="{% url 'editar_personaje' p.id %}" method="get" style="display:inline;">
+              <button type="submit" class="edit-btn">Editar</button>
+            </form>
+
+            <b>{{ p.nombre }}</b> 
+            (creado por: {{ p.owner.username }}) — Nivel {{ p.nivel }} — {{ p.estado }}
+
+            <div class="note">
+              Raza: {{ p.raza }}<br>
+              Habilidades: {{ p.habilidades }}<br>
+              Poder: {{ p.poder }}<br>
+              Equipo: {{ p.equipo }}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="note">No hay personajes registrados.</div>
+      {% endif %}
+    </div>
+
+    <a href="{% url 'logout_view' %}" class="btn warn">Cerrar sesión</a>
+  </div>
+</body>
+</html>
